@@ -2,6 +2,8 @@ import { createContext, useContext } from "react";
 
 type AppContextValue = {
   isOpenedMenu: boolean;
+  isMobile: boolean;
+  windowWidth: number;
   handleOpenMenu(): void;
 };
 
