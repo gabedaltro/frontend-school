@@ -48,10 +48,10 @@ const StudentPage: React.FC = () => {
 
   return (
     <div>
-      <Appbar title="Turma" />
+      <Appbar title="Alunos" />
       <PageHeaderActions
-        title="Turmas"
-        description="Gestão das classes"
+        title="Alunos"
+        description="Gestão dos alunos"
         ActionComponent={
           <>
             <Button
