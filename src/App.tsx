@@ -5,6 +5,7 @@ import { AppProvider } from "./hooks/app";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import { mobileCheck } from "./helpers/MobileCheck";
+import MessagingProvider from "./providers/messaging";
 
 const App: React.FC = () => {
   const [isMobile, setIsMobile] = useState(mobileCheck());
@@ -32,7 +33,9 @@ const App: React.FC = () => {
         value={{ handleOpenMenu, isOpenedMenu, isMobile, windowWidth }}
       >
         <ThemeProvider theme={theme}>
-          <AppRoutes />
+          <MessagingProvider>
+            <AppRoutes />
+          </MessagingProvider>
         </ThemeProvider>
       </AppProvider>
     </BrowserRouter>
