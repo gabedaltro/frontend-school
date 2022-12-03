@@ -1,32 +1,32 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#30519f',
+      main: "#574fd7",
     },
     secondary: {
-      main: '#f68c32',
+      main: "#f68c32",
     },
     error: {
-      main: '#f44336',
+      main: "#f44336",
     },
   },
   typography: {
     fontSize: 14,
     fontFamily: [
       '"Montserrat"',
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(','),
+    ].join(","),
   },
   shape: {
     borderRadius: 0,
@@ -35,7 +35,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         contained: {
-          boxShadow: 'none',
+          boxShadow: "none",
         },
       },
     },
@@ -52,20 +52,20 @@ const theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#272c3a',
-          border: 'none',
+          backgroundColor: "#272c3a",
+          border: "none",
         },
       },
     },
     MuiTextField: {
       defaultProps: {
-        variant: 'standard',
+        variant: "standard",
       },
     },
     MuiTabs: {
       defaultProps: {
-        indicatorColor: 'secondary',
-        textColor: 'inherit',
+        indicatorColor: "secondary",
+        textColor: "inherit",
       },
     },
   },
