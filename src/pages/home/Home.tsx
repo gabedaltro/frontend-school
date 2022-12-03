@@ -1,8 +1,8 @@
 import React from "react";
-import Appbar from "../appbar/Appbar";
-import { Typography } from "@mui/material";
-import PageHeader from "../page-header/PageHeader";
 import { makeStyles } from "@mui/styles";
+import { Typography } from "@mui/material";
+import Appbar from "../../components/appbar/Appbar";
+import PageHeader from "../../components/page-header/PageHeader";
 
 const useStyles = makeStyles({
   container: {
