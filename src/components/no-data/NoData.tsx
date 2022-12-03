@@ -1,15 +1,16 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import React from "react";
+import { Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
     flex: 1,
-    background: '#fff',
+    background: "#fff",
     marginTop: 10,
+    padding: 10,
   },
 });
 
@@ -22,7 +23,7 @@ const NoData: React.FC<NoDataProps> = ({ message }) => {
 
   return (
     <div className={classes.container}>
-      <Typography>{message}</Typography>
+      <Typography color="#666">{message}</Typography>
     </div>
   );
 };
