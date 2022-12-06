@@ -99,7 +99,7 @@ const Sidebar: React.FC = () => {
       >
         <div className={classes.content}>
           <div className={classes.drawerHeader}>
-            <Typography variant="h6">NOME DA ESCOLA</Typography>
+            <Typography variant="h6">Escola Facs</Typography>
           </div>
 
           <SidebarItem to="/" icon={<Home />} text="Home" />
