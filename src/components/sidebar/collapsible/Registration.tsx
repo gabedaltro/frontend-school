@@ -17,7 +17,12 @@ const Registration: React.FC = () => {
         opened={collapsible.registration}
       />
       <Collapse in={collapsible.registration}>
-        <SidebarItem nested={5} to="/class" icon={<Person />} text="Turma" />
+        <SidebarItem
+          nested={5}
+          to="/classroom"
+          icon={<Person />}
+          text="Turma"
+        />
 
         <SidebarItem
           icon={<Person />}
