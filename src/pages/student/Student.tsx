@@ -6,11 +6,11 @@ import { api } from "../../services/api";
 import { Student } from "../../types/student";
 import { useNavigate } from "react-router-dom";
 import Appbar from "../../components/appbar/Appbar";
-import PageHeaderActions from "../../components/page-header/PageHeaderActions";
+import NoData from "../../components/no-data/NoData";
 import { useMessaging } from "../../providers/messaging";
 import TableLoading from "../../components/loading/TableLoading";
 import ModuleLoading from "../../components/loading/ModuleLoading";
-import NoData from "../../components/no-data/NoData";
+import PageHeaderActions from "../../components/page-header/PageHeaderActions";
 
 const useStyles = makeStyles({
   container: {
@@ -39,7 +39,7 @@ const StudentPage: React.FC = () => {
       .get("/student")
       .then((response) => setStudents(response.data))
       .catch(() =>
-        messaging.handleOpen("Não foi possível carregar os estudantes")
+        messaging.handleOpen("Não foi possível carregar os estudantes.")
       )
       .finally(() => {
         setLoading(false);
@@ -74,7 +74,7 @@ const StudentPage: React.FC = () => {
             <ModuleLoading />
           )
         ) : students.length === 0 ? (
-          <NoData message="Nenhum aluno matriculado" />
+          <NoData message="Nenhum aluno matriculado." />
         ) : (
           <>existe</>
         )}
