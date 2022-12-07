@@ -1,4 +1,5 @@
 import React from "react";
+import { useApp } from "../../hooks/app";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import Appbar from "../../components/appbar/Appbar";
@@ -20,28 +21,36 @@ const useStyles = makeStyles({
 
 const Home: React.FC = () => {
   const classes = useStyles();
+  const { school } = useApp();
 
   return (
-    <div>
+    <>
       <Appbar title="Início" />
       <PageHeader
-        title="Escola Facs"
-        description="Confira as informações sobre a Escola Facs"
+        title={school?.name || "Escola"}
+        description={`Confira as informações sobre a ${school?.name}`}
       />
 
       <div className={classes.container}>
-        <img src="/assets/brand.png" alt="brand" className={classes.image} />
+        <img src={school?.brand} alt="brand" className={classes.image} />
         <Typography>
-          Nome: <b>Escola Facs</b>
+          Nome: <b>{school?.name}</b>
         </Typography>
         <Typography>
-          CNPJ: <b>00.000.000/0001-00</b>
+          CNPJ: <b>{school?.document}</b>
         </Typography>
         <Typography>
-          Endereço: <b>Rua XXXXX, Nº 3, Salvador, Bahia.</b>
+          Endereço:{" "}
+          <b>
+            {school?.address}, {school?.city}, {school?.state},{" "}
+            {school?.country}
+          </b>
+        </Typography>
+        <Typography>
+          CEP: <b>{school?.zipcode}</b>
         </Typography>
       </div>
-    </div>
+    </>
   );
 };
 
