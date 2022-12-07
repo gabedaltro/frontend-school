@@ -11,8 +11,7 @@ import { useMessaging } from "../../../../providers/messaging";
 import PageHeader from "../../../../components/page-header/PageHeader";
 import { useStudentValidation } from "../validation/studentValidation";
 
-const queryParamsInitialValue: Student = {
-  id: "",
+const queryParamsInitialValue = {
   class_school_id: "",
   name: "",
   document: "",
@@ -55,12 +54,12 @@ const StudentNew: React.FC = () => {
     api
       .post("/students", student)
       .then(() => {
-        setSaving(false);
         history("/students");
       })
       .catch(() => {
         handleOpen("Não foi possível criar um novo registro.");
-      });
+      })
+      .finally(() => setSaving(false));
   }
 
   return (

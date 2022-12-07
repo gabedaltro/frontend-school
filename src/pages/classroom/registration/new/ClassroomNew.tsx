@@ -11,8 +11,7 @@ import { useMessaging } from "../../../../providers/messaging";
 import { useClassValidation } from "../validation/classValidation";
 import PageHeader from "../../../../components/page-header/PageHeader";
 
-const queryParamsInitialValue: Class = {
-  id: "",
+const queryParamsInitialValue = {
   name: "",
   school_id: "",
 };
@@ -49,14 +48,14 @@ const ClassroomNew: React.FC = () => {
     setSaving(true);
 
     api
-      .post("/classroom", { ...classroom, school_id: school?.id })
+      .post("/school-class", { ...classroom, school_id: school?.id })
       .then(() => {
-        setSaving(false);
         history("/classroom");
       })
       .catch(() => {
         handleOpen("Não foi possível criar um novo registro.");
-      });
+      })
+      .finally(() => setSaving(false));
   }
 
   return (

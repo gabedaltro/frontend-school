@@ -11,8 +11,7 @@ import { useMessaging } from "../../../../providers/messaging";
 import PageHeader from "../../../../components/page-header/PageHeader";
 import { useTeacherValidation } from "../validation/teacherValidation";
 
-const queryParamsInitialValue: Teacher = {
-  id: "",
+const queryParamsInitialValue = {
   academic_title: "",
   discipline_teaches: "",
   document: "",
@@ -55,12 +54,12 @@ const TeacherNew: React.FC = () => {
     api
       .post("/teachers", teacher)
       .then(() => {
-        setSaving(false);
         history("/teachers");
       })
       .catch(() => {
         handleOpen("Não foi possível criar um novo registro.");
-      });
+      })
+      .finally(() => setSaving(false));
   }
 
   return (
