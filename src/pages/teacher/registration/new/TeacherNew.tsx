@@ -14,9 +14,10 @@ import { useTeacherValidation } from "../validation/teacherValidation";
 const queryParamsInitialValue: Teacher = {
   id: "",
   academic_title: "",
-  discipline: "",
+  discipline_teaches: "",
   document: "",
   name: "",
+  class_school_id: "",
 };
 
 const TeacherNew: React.FC = () => {
