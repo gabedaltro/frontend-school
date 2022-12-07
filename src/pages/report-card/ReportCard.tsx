@@ -45,7 +45,7 @@ const ReportCard: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Appbar title="Boletins" />
       <PageHeaderActions
         title="Boletins"
@@ -64,20 +64,18 @@ const ReportCard: React.FC = () => {
         }
       />
 
-      <div className={classes.container}>
-        {loading ? (
-          displayMode === "list" ? (
-            <TableLoading />
-          ) : (
-            <ModuleLoading />
-          )
-        ) : students.length === 0 ? (
-          <NoData message="Nenhum boletim encontrado." />
+      {loading ? (
+        displayMode === "list" ? (
+          <TableLoading />
         ) : (
-          <>existe</>
-        )}
-      </div>
-    </div>
+          <ModuleLoading />
+        )
+      ) : students.length === 0 ? (
+        <NoData message="Nenhum boletim encontrado." />
+      ) : (
+        <>existe</>
+      )}
+    </>
   );
 };
 
