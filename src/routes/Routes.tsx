@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import StudentPage from "../pages/student/Student";
 import TeacherPage from "../pages/teacher/Teacher";
 import Error404 from "../components/error/Error404";
-import Classroom from "../pages/classroom/Clasroom";
+import Classroom from "../pages/classroom/Classroom";
 import ReportCard from "../pages/report-card/ReportCard";
 import StudentNew from "../pages/student/registration/new/StudentNew";
 import TeacherNew from "../pages/teacher/registration/new/TeacherNew";
