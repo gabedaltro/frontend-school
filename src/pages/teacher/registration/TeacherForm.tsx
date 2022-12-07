@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { TextField } from "@mui/material";
+import { api } from "../../../services/api";
+import { Class } from "../../../types/class";
 import { Teacher } from "../../../types/teacher";
+import { MenuItem, TextField } from "@mui/material";
 import { TeacherValidation } from "./validation/teacherValidation";
 
 const useStyles = makeStyles({
@@ -24,9 +26,18 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
   validation,
 }) => {
   const classes = useStyles();
+  const [schoolClasses, setSchoolClasses] = useState<Class[]>([]);
+
+  useEffect(() => {
+    api
+      .get("/school-class")
+      .then((response) => setSchoolClasses(response.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   const inputs = {
     name: useRef<HTMLInputElement>(null),
+    class: useRef<HTMLInputElement>(null),
     document: useRef<HTMLInputElement>(null),
     discipline: useRef<HTMLInputElement>(null),
     academic_title: useRef<HTMLInputElement>(null),
@@ -56,6 +67,23 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
       />
 
       <TextField
+        select
+        inputRef={inputs.class}
+        error={!!validation.class}
+        helperText={validation.class}
+        label="Sala"
+        placeholder="Digite a turma do estudante"
+        margin="normal"
+        fullWidth
+        value={teacher.class_school_id}
+        onChange={(e) => handleChange("class_school_id", e.target.value)}
+      >
+        {schoolClasses.map((item) => (
+          <MenuItem value={item.id}>{item.name}</MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
         inputRef={inputs.discipline}
         error={!!validation.discipline}
         helperText={validation.discipline}
@@ -63,8 +91,8 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
         placeholder="Digite a disciplina do professor"
         margin="normal"
         fullWidth
-        value={teacher.discipline}
-        onChange={(e) => handleChange("discipline", e.target.value)}
+        value={teacher.discipline_teaches}
+        onChange={(e) => handleChange("discipline_teaches", e.target.value)}
       />
 
       <TextField
