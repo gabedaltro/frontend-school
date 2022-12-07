@@ -4,6 +4,7 @@ import * as yup from "yup";
 
 export type TeacherValidation = {
   name?: string;
+  class?: string;
   document?: string;
   discipline?: string;
   academic_title?: string;
@@ -21,6 +22,7 @@ export function useTeacherValidation(): UseTeacherValidation {
       academic_title: yup.string().required("O título é obrigatório"),
       document: yup.string().required("O documento é obrigatório"),
       discipline: yup.string().required("A disciplina é obrigatória"),
+      class: yup.string().required("A turma é obrigatória"),
       name: yup.string().required("O nome do professor é obrigatório"),
     });
 
