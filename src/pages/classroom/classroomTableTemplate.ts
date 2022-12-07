@@ -5,7 +5,7 @@ export const classroomTableTemplate: TableTemplate[] = [
     id: "id",
     description: "ID",
     originalId: "id",
-    width: 100,
+    width: 150,
   },
   {
     id: "name",
