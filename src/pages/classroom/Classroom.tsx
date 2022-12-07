@@ -5,11 +5,18 @@ import { useApp } from "../../hooks/app";
 import { api } from "../../services/api";
 import { Class } from "../../types/class";
 import { useNavigate } from "react-router-dom";
+import useTableOrder from "../../hooks/tableOrder";
 import Appbar from "../../components/appbar/Appbar";
 import NoData from "../../components/no-data/NoData";
 import { useMessaging } from "../../providers/messaging";
+import PaginationProvider from "../../hooks/pagination";
+import Pagination from "../../components/pagination/Pagination";
+import ClassroomListTable from "./list/table/ClassroomListTable";
 import TableLoading from "../../components/loading/TableLoading";
+import { classroomTableTemplate } from "./classroomTableTemplate";
 import ModuleLoading from "../../components/loading/ModuleLoading";
+import TableContainer from "../../components/table/TableContainer";
+import ClassroomListModule from "./list/module/ClassroomListModule";
 import PageHeaderActions from "../../components/page-header/PageHeaderActions";
 
 const useStyles = makeStyles({
@@ -23,11 +30,13 @@ const useStyles = makeStyles({
 
 const Classroom: React.FC = () => {
   const app = useApp();
-  const classesStyles = useStyles();
+  const classes = useStyles();
   const history = useNavigate();
   const messaging = useMessaging();
+  const [orderedIndex, sort] = useTableOrder();
   const [loading, setLoading] = useState(false);
-  const [classes, setClasses] = useState<Class[]>([]);
+  const [filtered, setFiltered] = useState<Class[]>([]);
+  const [classrooms, setClassrooms] = useState<Class[]>([]);
   const [displayMode, setDisplayMode] = useState<"list" | "module">("list");
 
   useEffect(() => {
@@ -35,17 +44,26 @@ const Classroom: React.FC = () => {
   }, [app.isMobile, app.windowWidth]);
 
   useEffect(() => {
+    setFiltered(classrooms);
+  }, [classrooms]);
+
+  useEffect(() => {
     api
-      .get("/student")
-      .then((response) => setClasses(response.data))
+      .get("/school-class")
+      .then((response) => setClassrooms(response.data))
       .catch(() => messaging.handleOpen("Não foi possível carregar as turmas."))
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  function handleSort(index: string) {
+    const p = sort(index, filtered);
+    setFiltered(p);
+  }
+
   return (
-    <div>
+    <>
       <Appbar title="Turmas" />
       <PageHeaderActions
         title="Turmas"
@@ -64,20 +82,35 @@ const Classroom: React.FC = () => {
         }
       />
 
-      <div className={classesStyles.container}>
+      <TableContainer tableTemplate={classroomTableTemplate}>
         {loading ? (
           displayMode === "list" ? (
             <TableLoading />
           ) : (
             <ModuleLoading />
           )
-        ) : classes.length === 0 ? (
+        ) : filtered.length === 0 ? (
           <NoData message="Nenhuma turma cadastrada." />
         ) : (
-          <>existe</>
+          <PaginationProvider>
+            <div className={classes.container}>
+              {displayMode === "list" ? (
+                <ClassroomListTable
+                  classrooms={filtered}
+                  handleSort={handleSort}
+                  orderedIndex={orderedIndex}
+                />
+              ) : (
+                displayMode === "module" && (
+                  <ClassroomListModule classrooms={filtered} />
+                )
+              )}
+              <Pagination count={filtered.length} />
+            </div>
+          </PaginationProvider>
         )}
-      </div>
-    </div>
+      </TableContainer>
+    </>
   );
 };
 
