@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { api } from "../../../services/api";
+import { useApp } from "../../../hooks/app";
 import { Class } from "../../../types/class";
 import { Student } from "../../../types/student";
 import { MenuItem, TextField } from "@mui/material";
@@ -28,19 +29,24 @@ const StudentForm: React.FC<StudentFormProps> = ({
   type,
 }) => {
   const classes = useStyles();
+  const { school } = useApp();
   const [schoolClasses, setSchoolClasses] = useState<Class[]>([]);
 
   useEffect(() => {
+    if (!school) {
+      return;
+    }
+
     api
-      .get("/school-class")
+      .get(`/school/${school?.id}/class`)
       .then((response) => setSchoolClasses(response.data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [school]);
 
   const inputs = {
     name: useRef<HTMLInputElement>(null),
     document: useRef<HTMLInputElement>(null),
-    class: useRef<HTMLInputElement>(null),
+    class_school_id: useRef<HTMLInputElement>(null),
     module: useRef<HTMLInputElement>(null),
     registration_number: useRef<HTMLInputElement>(null),
   };
@@ -70,9 +76,9 @@ const StudentForm: React.FC<StudentFormProps> = ({
 
       <TextField
         select
-        inputRef={inputs.class}
-        error={!!validation.class}
-        helperText={validation.class}
+        inputRef={inputs.class_school_id}
+        error={!!validation.class_school_id}
+        helperText={validation.class_school_id}
         label="Sala"
         placeholder="Digite a turma do estudante"
         margin="normal"
@@ -102,6 +108,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
         error={!!validation.registration_number}
         helperText={validation.registration_number}
         label="Número de registro"
+        type="number"
         placeholder="Número de registro"
         value={student.registration_number}
         onChange={(e) => handleChange("registration_number", e.target.value)}

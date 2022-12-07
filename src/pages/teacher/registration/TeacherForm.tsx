@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@mui/styles";
+import { useApp } from "../../../hooks/app";
 import { api } from "../../../services/api";
 import { Class } from "../../../types/class";
 import { Teacher } from "../../../types/teacher";
@@ -26,20 +27,25 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
   validation,
 }) => {
   const classes = useStyles();
+  const { school } = useApp();
   const [schoolClasses, setSchoolClasses] = useState<Class[]>([]);
 
   useEffect(() => {
+    if (!school) {
+      return;
+    }
+
     api
-      .get("/school-class")
+      .get(`/school/${school?.id}/class`)
       .then((response) => setSchoolClasses(response.data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [school]);
 
   const inputs = {
     name: useRef<HTMLInputElement>(null),
-    class: useRef<HTMLInputElement>(null),
+    class_school_id: useRef<HTMLInputElement>(null),
     document: useRef<HTMLInputElement>(null),
-    discipline: useRef<HTMLInputElement>(null),
+    discipline_teaches: useRef<HTMLInputElement>(null),
     academic_title: useRef<HTMLInputElement>(null),
   };
 
@@ -68,9 +74,9 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
 
       <TextField
         select
-        inputRef={inputs.class}
-        error={!!validation.class}
-        helperText={validation.class}
+        inputRef={inputs.class_school_id}
+        error={!!validation.class_school_id}
+        helperText={validation.class_school_id}
         label="Sala"
         placeholder="Digite a turma do estudante"
         margin="normal"
@@ -84,9 +90,9 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
       </TextField>
 
       <TextField
-        inputRef={inputs.discipline}
-        error={!!validation.discipline}
-        helperText={validation.discipline}
+        inputRef={inputs.discipline_teaches}
+        error={!!validation.discipline_teaches}
+        helperText={validation.discipline_teaches}
         label="Disciplina"
         placeholder="Digite a disciplina do professor"
         margin="normal"

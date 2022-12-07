@@ -48,14 +48,18 @@ const Classroom: React.FC = () => {
   }, [classrooms]);
 
   useEffect(() => {
+    if (!app.school) {
+      return;
+    }
+
     api
-      .get("/school-class")
-      .then((response) => setClassrooms(response.data.school_class))
+      .get(`/school/${app.school?.id}/class`)
+      .then((response) => setClassrooms(response.data))
       .catch(() => messaging.handleOpen("Não foi possível carregar as turmas."))
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [app.school]);
 
   function handleSort(index: string) {
     const p = sort(index, filtered);
