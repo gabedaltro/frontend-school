@@ -6,6 +6,8 @@ export type StudentValidation = {
   name?: string;
   class?: string;
   document?: string;
+  module?: string;
+  registration_number?: string;
 };
 
 type UseStudentValidation = [
@@ -17,8 +19,12 @@ type UseStudentValidation = [
 export function useStudentValidation(): UseStudentValidation {
   async function handleValidation(student: Student) {
     const schema = yup.object().shape({
-      class: yup.string().required("A turma é obrigatória"),
+      module: yup.string().required("O módulo é obrigatório"),
+      registration_number: yup
+        .string()
+        .required("O número de registro é obrigatório"),
       document: yup.string().required("O documento é obrigatório"),
+      class: yup.string().required("A turma é obrigatória"),
       name: yup.string().required("O nome do aluno é obrigatório"),
     });
 
