@@ -8,6 +8,7 @@ import Classroom from "../pages/classroom/Classroom";
 import ReportCard from "../pages/report-card/ReportCard";
 import StudentNew from "../pages/student/registration/new/StudentNew";
 import TeacherNew from "../pages/teacher/registration/new/TeacherNew";
+import ClassroomNew from "../pages/classroom/registration/new/ClassroomNew";
 
 const AppRoutes = () => {
   return (
@@ -19,7 +20,7 @@ const AppRoutes = () => {
       <Route path="/classroom" element={<RouteApp element={<Classroom />} />} />
       <Route
         path="/classroom/new"
-        element={<RouteApp element={<Classroom />} />}
+        element={<RouteApp element={<ClassroomNew />} />}
       />
 
       <Route
