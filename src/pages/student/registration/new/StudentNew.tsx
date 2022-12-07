@@ -13,10 +13,11 @@ import { useStudentValidation } from "../validation/studentValidation";
 
 const queryParamsInitialValue: Student = {
   id: "",
-  class: "",
+  class_school_id: "",
   name: "",
   document: "",
-  registration_number: 0,
+  registration_number: undefined,
+  module: 1,
 };
 
 const StudentNew: React.FC = () => {
@@ -72,6 +73,7 @@ const StudentNew: React.FC = () => {
       <PageHeader title="Novo aluno" backUrl="/students" />
       <form onSubmit={handleValidation}>
         <StudentForm
+          type="new"
           handleChange={handleChange}
           student={student}
           validation={validation}
