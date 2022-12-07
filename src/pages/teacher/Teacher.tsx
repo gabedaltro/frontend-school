@@ -12,6 +12,13 @@ import { useMessaging } from "../../providers/messaging";
 import TableLoading from "../../components/loading/TableLoading";
 import ModuleLoading from "../../components/loading/ModuleLoading";
 import PageHeaderActions from "../../components/page-header/PageHeaderActions";
+import useTableOrder from "../../hooks/tableOrder";
+import TableContainer from "../../components/table/TableContainer";
+import PaginationProvider from "../../hooks/pagination";
+import Pagination from "../../components/pagination/Pagination";
+import { teacherTableTemplate } from "./teacherTableTemplate";
+import TeacherListTable from "./list/table/TeacherListTable";
+import TeacherListModule from "./list/module/TeacherListModule";
 
 const useStyles = makeStyles({
   container: {
@@ -27,8 +34,10 @@ const TeacherPage: React.FC = () => {
   const classes = useStyles();
   const history = useNavigate();
   const messaging = useMessaging();
+  const [orderedIndex, sort] = useTableOrder();
   const [loading, setLoading] = useState(false);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [filtered, setFiltered] = useState<Teacher[]>([]);
   const [displayMode, setDisplayMode] = useState<"list" | "module">("list");
 
   useEffect(() => {
@@ -36,8 +45,12 @@ const TeacherPage: React.FC = () => {
   }, [app.isMobile, app.windowWidth]);
 
   useEffect(() => {
+    setFiltered(teachers);
+  }, [teachers]);
+
+  useEffect(() => {
     api
-      .get("/student")
+      .get("/teacher")
       .then((response) => setTeachers(response.data))
       .catch(() =>
         messaging.handleOpen("Não foi possível carregar os professores.")
@@ -47,8 +60,13 @@ const TeacherPage: React.FC = () => {
       });
   }, []);
 
+  function handleSort(index: string) {
+    const p = sort(index, filtered);
+    setFiltered(p);
+  }
+
   return (
-    <div>
+    <>
       <Appbar title="Professores" />
       <PageHeaderActions
         title="Professores"
@@ -67,20 +85,35 @@ const TeacherPage: React.FC = () => {
         }
       />
 
-      <div className={classes.container}>
+      <TableContainer tableTemplate={teacherTableTemplate}>
         {loading ? (
           displayMode === "list" ? (
             <TableLoading />
           ) : (
             <ModuleLoading />
           )
-        ) : teachers.length === 0 ? (
+        ) : filtered.length === 0 ? (
           <NoData message="Nenhum professor cadastrado." />
         ) : (
-          <>existe</>
+          <PaginationProvider>
+            <div className={classes.container}>
+              {displayMode === "list" ? (
+                <TeacherListTable
+                  teachers={filtered}
+                  handleSort={handleSort}
+                  orderedIndex={orderedIndex}
+                />
+              ) : (
+                displayMode === "module" && (
+                  <TeacherListModule teachers={filtered} />
+                )
+              )}
+              <Pagination count={filtered.length} />
+            </div>
+          </PaginationProvider>
         )}
-      </div>
-    </div>
+      </TableContainer>
+    </>
   );
 };
 
