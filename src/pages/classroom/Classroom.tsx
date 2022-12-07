@@ -50,7 +50,7 @@ const Classroom: React.FC = () => {
   useEffect(() => {
     api
       .get("/school-class")
-      .then((response) => setClassrooms(response.data))
+      .then((response) => setClassrooms(response.data.school_class))
       .catch(() => messaging.handleOpen("Não foi possível carregar as turmas."))
       .finally(() => {
         setLoading(false);
