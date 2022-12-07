@@ -7,4 +7,5 @@ export interface School {
   city: string;
   state: string;
   country: string;
+  brand: string;
 }
