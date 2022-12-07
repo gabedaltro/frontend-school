@@ -50,7 +50,7 @@ const StudentPage: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     api
-      .get("/student")
+      .get("/students")
       .then((response) => setStudents(response.data))
       .catch(() =>
         messaging.handleOpen("Não foi possível carregar os estudantes.")
