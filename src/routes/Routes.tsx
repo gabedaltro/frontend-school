@@ -9,6 +9,9 @@ import ReportCard from "../pages/report-card/ReportCard";
 import StudentNew from "../pages/student/registration/new/StudentNew";
 import TeacherNew from "../pages/teacher/registration/new/TeacherNew";
 import ClassroomNew from "../pages/classroom/registration/new/ClassroomNew";
+import TeacherUpdate from "../pages/teacher/edit/TeacherUpdate";
+import StudentUpdate from "../pages/student/edit/StudentUpdate";
+import ClassroomUpdate from "../pages/classroom/edit/ClassroomUpdate";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +21,10 @@ const AppRoutes = () => {
       <Route path="/" element={<RouteApp element={<Home />} />} />
 
       <Route path="/classroom" element={<RouteApp element={<Classroom />} />} />
+      <Route
+        path="/classroom/:id"
+        element={<RouteApp element={<ClassroomUpdate />} />}
+      />
       <Route
         path="/classroom/new"
         element={<RouteApp element={<ClassroomNew />} />}
@@ -37,6 +44,10 @@ const AppRoutes = () => {
         element={<RouteApp element={<TeacherPage />} />}
       />
       <Route
+        path="/teacher/:id"
+        element={<RouteApp element={<TeacherUpdate />} />}
+      />
+      <Route
         path="/teacher/new"
         element={<RouteApp element={<TeacherNew />} />}
       />
@@ -44,6 +55,10 @@ const AppRoutes = () => {
       <Route
         path="/students"
         element={<RouteApp element={<StudentPage />} />}
+      />
+      <Route
+        path="/student/:id"
+        element={<RouteApp element={<StudentUpdate />} />}
       />
       <Route
         path="/student/new"
