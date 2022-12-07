@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 export type StudentValidation = {
   name?: string;
-  class?: string;
+  class_school_id?: string;
   document?: string;
   module?: string;
   registration_number?: string;
@@ -24,7 +24,7 @@ export function useStudentValidation(): UseStudentValidation {
         .string()
         .required("O número de registro é obrigatório"),
       document: yup.string().required("O documento é obrigatório"),
-      class: yup.string().required("A turma é obrigatória"),
+      class_school_id: yup.string().required("A turma é obrigatória"),
       name: yup.string().required("O nome do aluno é obrigatório"),
     });
 
