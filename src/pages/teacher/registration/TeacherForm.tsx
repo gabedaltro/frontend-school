@@ -78,7 +78,7 @@ const TeacherForm: React.FC<TeacherFormProps> = ({
         error={!!validation.class_school_id}
         helperText={validation.class_school_id}
         label="Sala"
-        placeholder="Digite a turma do estudante"
+        placeholder="Digite a turma do professor"
         margin="normal"
         fullWidth
         value={teacher.class_school_id}
