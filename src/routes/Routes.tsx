@@ -12,6 +12,8 @@ import ClassroomNew from "../pages/classroom/registration/new/ClassroomNew";
 import TeacherUpdate from "../pages/teacher/edit/TeacherUpdate";
 import StudentUpdate from "../pages/student/edit/StudentUpdate";
 import ClassroomUpdate from "../pages/classroom/edit/ClassroomUpdate";
+import ReportCardNew from "../pages/report-card/registration/new/ReportCardNew";
+import ReportCardUpdate from "../pages/report-card/edit/ReportCardUpdate";
 
 const AppRoutes = () => {
   return (
@@ -31,12 +33,16 @@ const AppRoutes = () => {
       />
 
       <Route
+        path="/report-card/:id"
+        element={<RouteApp element={<ReportCardUpdate />} />}
+      />
+      <Route
         path="/report-card"
         element={<RouteApp element={<ReportCard />} />}
       />
       <Route
         path="/report-card/new"
-        element={<RouteApp element={<ReportCard />} />}
+        element={<RouteApp element={<ReportCardNew />} />}
       />
 
       <Route
