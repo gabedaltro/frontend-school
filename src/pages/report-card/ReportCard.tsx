@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useApp } from "../../hooks/app";
 import { api } from "../../services/api";
-import { Student } from "../../types/student";
 import { useNavigate } from "react-router-dom";
+import useTableOrder from "../../hooks/tableOrder";
+import { ReportCard } from "../../types/reportCard";
 import Appbar from "../../components/appbar/Appbar";
 import NoData from "../../components/no-data/NoData";
+import PaginationProvider from "../../hooks/pagination";
 import { useMessaging } from "../../providers/messaging";
 import TableLoading from "../../components/loading/TableLoading";
 import ModuleLoading from "../../components/loading/ModuleLoading";
+import ReportCardListTable from "./list/table/ReportCardListTable";
+import TableContainer from "../../components/table/TableContainer";
+import { reportCardTableTemplate } from "./reportCardTableTemplate";
+import ReportCardListModule from "./list/module/ReportCardListModule";
 import PageHeaderActions from "../../components/page-header/PageHeaderActions";
 
 const useStyles = makeStyles({
@@ -21,13 +27,15 @@ const useStyles = makeStyles({
   },
 });
 
-const ReportCard: React.FC = () => {
+const ReportCardPage: React.FC = () => {
   const app = useApp();
   const classes = useStyles();
   const history = useNavigate();
   const messaging = useMessaging();
+  const [orderedIndex, sort] = useTableOrder();
   const [loading, setLoading] = useState(false);
-  const [students, setStudents] = useState<Student[]>([]);
+  const [filtered, setFiltered] = useState<ReportCard[]>([]);
+  const [reportCards, setReportCards] = useState<ReportCard[]>([]);
   const [displayMode, setDisplayMode] = useState<"list" | "module">("list");
 
   useEffect(() => {
@@ -35,14 +43,23 @@ const ReportCard: React.FC = () => {
   }, [app.isMobile, app.windowWidth]);
 
   useEffect(() => {
+    setFiltered(reportCards);
+  }, [reportCards]);
+
+  useEffect(() => {
     api
-      .get("/student")
-      .then((response) => setStudents(response.data))
+      .get("/grade")
+      .then((response) => setReportCards(response.data))
       .catch(() => messaging.handleOpen("Não foi possível carregar as notas."))
       .finally(() => {
         setLoading(false);
       });
   }, []);
+
+  function handleSort(index: string) {
+    const p = sort(index, filtered);
+    setFiltered(p);
+  }
 
   return (
     <>
@@ -64,19 +81,36 @@ const ReportCard: React.FC = () => {
         }
       />
 
-      {loading ? (
-        displayMode === "list" ? (
-          <TableLoading />
+      <TableContainer tableTemplate={reportCardTableTemplate}>
+        {loading ? (
+          displayMode === "list" ? (
+            <TableLoading />
+          ) : (
+            <ModuleLoading />
+          )
+        ) : filtered.length === 0 ? (
+          <NoData message="Nenhum boletim encontrado." />
         ) : (
-          <ModuleLoading />
-        )
-      ) : students.length === 0 ? (
-        <NoData message="Nenhum boletim encontrado." />
-      ) : (
-        <>existe</>
-      )}
+          <PaginationProvider>
+            <div className={classes.container}>
+              {displayMode === "list" ? (
+                <ReportCardListTable
+                  reportCards={filtered}
+                  handleSort={handleSort}
+                  orderedIndex={orderedIndex}
+                />
+              ) : (
+                displayMode === "module" && (
+                  <ReportCardListModule reportCards={filtered} />
+                )
+              )}
+              <Pagination count={filtered.length} />
+            </div>
+          </PaginationProvider>
+        )}
+      </TableContainer>
     </>
   );
 };
 
-export default ReportCard;
+export default ReportCardPage;
