@@ -9,12 +9,14 @@ import { useMessaging } from "../../../providers/messaging";
 import PageHeader from "../../../components/page-header/PageHeader";
 import InsideLoading from "../../../components/loading/InsideLoading";
 import { useReportCardValidation } from "../registration/validation/reportCardValidation";
+import DeleteConfirmation from "../../../components/delete-confirmation/DeleteConfirmation";
 
 const ReportCardUpdate: React.FC = () => {
   const history = useNavigate();
   const { handleOpen } = useMessaging();
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState<string | undefined>();
   const [reportCard, setReportCard] = useState<ReportCard>({} as ReportCard);
   const [validation, setValidation, validate] = useReportCardValidation();
 
@@ -59,18 +61,43 @@ const ReportCardUpdate: React.FC = () => {
       .catch(() => handleOpen("Aconteceu um erro ao salvar."));
   }
 
+  function handleDelete() {
+    setSelectedId(reportCard.id);
+  }
+
+  async function handleSubmitDelete() {
+    api
+      .delete(`/grade/${id}`)
+      .then(() => {
+        history("/report-card");
+        handleOpen("Excluído");
+      })
+      .catch(() => {
+        handleOpen("Não foi possível excluir o registro.");
+      });
+  }
+
   return (
     <>
+      {selectedId && (
+        <DeleteConfirmation
+          onExited={() => setSelectedId("")}
+          description="boletim"
+          handleSubmit={handleSubmitDelete}
+          name={reportCard.id || ""}
+        />
+      )}
       <Appbar
         title="Boletim"
         ActionsComponent={
           <ReportCardActions
+            handleDelete={handleDelete}
             loading={loading}
             handleSubmit={handleValidation}
           />
         }
       />
-      <PageHeader title="Editar turma" backUrl="/reportCard" />
+      <PageHeader title="Editar boletim" backUrl="/report-card" />
       {loading ? (
         <InsideLoading />
       ) : (
