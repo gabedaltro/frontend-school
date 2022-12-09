@@ -6,7 +6,7 @@ Projeto feito com a biblioteca React.js + TypeScript, afim de obtenção de nota
 
 - [@gabedaltro](https://www.github.com/gabedaltro)
 - [@joaomarcosc](https://www.github.com/joaomarcosc)
-- [@gabedaltro](https://www.github.com/gabedaltro)
+- [@manuellereis](https://github.com/manuellereis)
 - [@gabedaltro](https://www.github.com/gabedaltro)
 
 ## Instalação
