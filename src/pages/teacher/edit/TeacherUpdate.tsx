@@ -9,6 +9,7 @@ import { useMessaging } from "../../../providers/messaging";
 import PageHeader from "../../../components/page-header/PageHeader";
 import InsideLoading from "../../../components/loading/InsideLoading";
 import { useTeacherValidation } from "../registration/validation/teacherValidation";
+import DeleteConfirmation from "../../../components/delete-confirmation/DeleteConfirmation";
 
 const TeacherUpdate: React.FC = () => {
   const history = useNavigate();
@@ -16,6 +17,7 @@ const TeacherUpdate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [teacher, setTeacher] = useState<Teacher>({} as Teacher);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [validation, setValidation, validate] = useTeacherValidation();
 
   useEffect(() => {
@@ -59,12 +61,40 @@ const TeacherUpdate: React.FC = () => {
       .catch(() => handleOpen("Aconteceu um erro ao salvar."));
   }
 
+  function handleDelete() {
+    setSelectedId(teacher.id);
+  }
+
+  async function handleSubmitDelete() {
+    api
+      .delete(`/teacher/${id}`)
+      .then(() => {
+        history("/teachers");
+        handleOpen("Excluído");
+      })
+      .catch(() => {
+        handleOpen("Não foi possível excluir o registro.");
+      });
+  }
+
   return (
     <>
+      {selectedId && (
+        <DeleteConfirmation
+          onExited={() => setSelectedId("")}
+          description="professor"
+          handleSubmit={handleSubmitDelete}
+          name={teacher.name}
+        />
+      )}
       <Appbar
         title="Professor"
         ActionsComponent={
-          <TeacherActions loading={loading} handleSubmit={handleValidation} />
+          <TeacherActions
+            handleDelete={handleDelete}
+            loading={loading}
+            handleSubmit={handleValidation}
+          />
         }
       />
       <PageHeader title="Editar professor" backUrl="/teachers" />
