@@ -9,6 +9,7 @@ import { useMessaging } from "../../../providers/messaging";
 import PageHeader from "../../../components/page-header/PageHeader";
 import InsideLoading from "../../../components/loading/InsideLoading";
 import { useClassValidation } from "../registration/validation/classValidation";
+import DeleteConfirmation from "../../../components/delete-confirmation/DeleteConfirmation";
 
 const ClassroomUpdate: React.FC = () => {
   const history = useNavigate();
@@ -16,6 +17,7 @@ const ClassroomUpdate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [classroom, setClassroom] = useState<Class>({} as Class);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [validation, setValidation, validate] = useClassValidation();
 
   useEffect(() => {
@@ -59,12 +61,40 @@ const ClassroomUpdate: React.FC = () => {
       .catch(() => handleOpen("Aconteceu um erro ao salvar."));
   }
 
+  function handleDelete() {
+    setSelectedId("classroom.id");
+  }
+
+  async function handleSubmitDelete() {
+    api
+      .delete(`/classroom/${id}`)
+      .then(() => {
+        history("/classroom");
+        handleOpen("Excluído");
+      })
+      .catch(() => {
+        handleOpen("Não foi possível excluir o registro.");
+      });
+  }
+
   return (
     <>
+      {selectedId && (
+        <DeleteConfirmation
+          onExited={() => setSelectedId(null)}
+          description="turma"
+          handleSubmit={handleSubmitDelete}
+          name={classroom.name}
+        />
+      )}
       <Appbar
         title="Turma"
         ActionsComponent={
-          <ClassroomActions loading={loading} handleSubmit={handleValidation} />
+          <ClassroomActions
+            handleDelete={handleDelete}
+            loading={loading}
+            handleSubmit={handleValidation}
+          />
         }
       />
       <PageHeader title="Editar turma" backUrl="/classroom" />
