@@ -52,7 +52,7 @@ const TeacherNew: React.FC = () => {
     setSaving(true);
 
     api
-      .post("/teachers", teacher)
+      .post("/teacher", teacher)
       .then(() => {
         history("/teachers");
       })
